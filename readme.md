@@ -6,6 +6,14 @@ A simple, plaintext recipe database for hackers
 
 # Getting Started
 
+You can host this system via [GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site). Fork this repo and enable Pages on your new repo.
+
+You'll need to edit the `start_url` setting in the `manifest.json` file, set it to the URL you've configured for your Pages site.
+
+There's a few other options you'll need to configure in the `_config.yml` file.
+
+# Testing Locally
+
 This is a Jekyll build. Make sure you have Jekyll [installed](https://jekyllrb.com/). To install, run this command in the terminal (or iTerm, etc):
 
 ```gem install bundler jekyll```
