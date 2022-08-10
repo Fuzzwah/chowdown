@@ -6,7 +6,9 @@ layout: default
 <!-- call up the image and image credit link -->
   {% for image in page.image %}
   <div class="xs-p2">
-    <img itemprop="image" src="{{site.baseurl}}/images/{{ image }}" />
+    <div class="banner">
+      <img itemprop="image" class="banner-img" src="{{site.baseurl}}/images/{{ image }}" />
+    </div>
     {% if page.imagecredit %}
       {% for imagecredit in page.imagecredit %}
         <a href="{{ imagecredit }}" class="right">
@@ -23,15 +25,33 @@ layout: default
   <header class="post-header">
     <h1 class="post-title center m1 sm-mt3" itemprop="name">{{ page.title }}</h1>
   </header>
-
-  <div class="px2 mt3 clearfix">
-    <div class="sm-col-8 mx-auto" itemprop="description">{{page.content}}</div>
+  <div class="col-12 center">
+    <!-- include the prep/cook times and "serves" info -->
+    <ul class="time-info">
+      <li class="time-info"><em class="time-info">{{ page.prepTime | round }}min</em> prep</li>
+      {% if page.performTime %}
+        {% assign h = page.performTime | divided_by: 60 %}
+        {% assign m = page.performTime | modulo: 60 %}
+        {% if h >= 1 %}
+          {% if m == 0 %}
+      <li class="time-info"><em class="time-info">{{ h | floor }}hr</em> cook</li>
+          {% else %}
+      <li class="time-info"><em class="time-info">{{ h | floor }}hr {{ m | round }}min</em> cook</li>
+          {% endif %}
+        {% else %}
+      <li class="time-info"><em class="time-info">{{ page.performTime | round }}min</em> cook</li>
+        {% endif %}
+      {% endif %}
+      <li class="time-info"><em class="time-info">{{ page.recipeYield }}</em></li>
+    </ul>
   </div>
-
-  <div class="mt3 clearfix">
-    <div class="sm-col sm-col-12 lg-col-12">
-      {% include nutritional-information.html %}
-    </div>
+  <div class="col-12 center">
+    <!-- display any tags -->
+    {% if page.tags %}
+      {% for tag in page.tags %}
+        <button class="tag">{{ tag | replace: ",", "" }}</button>
+      {% endfor %}
+    {% endif %}
   </div>
 
   <!-- call up recipe and directions -->
@@ -71,25 +91,43 @@ layout: default
     </div>
 
   </div>
-<!-- end recipe and directions -->
+  <!-- end recipe and directions -->
+
+  <!-- credits or extra info -->
+  <div class="px2 mt3 clearfix">
+    <div class="sm-col-8 mx-auto" itemprop="description">{{page.content}}</div>
+  </div>
+  <!-- end credits or extra info -->
+
+  <div class="mt3 clearfix">
+    <div class="sm-col sm-col-12 lg-col-12">
+      {% include nutritional-information.html %}
+    </div>
+  </div>  
 
 <!-- check if it's a component-based recipe, render it -->
   {% if page.components %}
-
+  {% assign n = page.components | size %}
   <div class="components bg-darken-2 p2 mt3 mb3 center">
     &darr; {{ site.translation[site.language].component_based }} &darr;
   </div>
 
   <div class="clearfix mxn2">
   {% for component in page.components %}
-    <div class="sm-col sm-col-4 px2">
+    {% if n == 1 %}
+      <div class="sm-col sm-col-12 px2">
+    {% elsif n == 2 %}
+      <div class="sm-col sm-col-6 px2">
+    {% else %}
+      <div class="sm-col sm-col-4 px2">
+    {% endif %}
     {% for recipe in site.components %}
     {% if recipe.title == component %}
       <h4 class="blue center">{{recipe.title}}</h4>
 
       {% for image in recipe.image %}
-      <div class="image ratio bg-cover" style="background-image:url({{site.baseurl}}/images/{{ image }});">
-        <img class="hide" itemprop="photo" src="{{site.baseurl}}/images/{{ image }}" />
+      <div class="banner">
+        <img itemprop="image" class="banner-img" src="{{site.baseurl}}/images/{{ image }}" />
       </div>
         {% if recipe.imagecredit %}
           {% for imagecredit in recipe.imagecredit %}
@@ -141,7 +179,7 @@ layout: default
   return this.on("click", cb);
   };
 
-  $("ul li").append('<input type="checkbox">');
+  $("ul li:not(.time-info)").append('<input type="checkbox">');
   $("ul li").clickToggle(function(){
     $(this).children("input").prop('checked', true);
     var height = $(this).height();
