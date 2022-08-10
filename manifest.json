@@ -21,6 +21,6 @@ layout: none
     ],
     "theme_color": "{{ site.color }}",
     "background_color": "{{ site.color }}",
-    "start_url": "https://recipe-test.fuzzwah.com",
+    "start_url": "https://recipes-test.fuzzwah.com",
     "display": "standalone"
 }

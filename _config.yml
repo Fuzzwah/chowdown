@@ -2,7 +2,7 @@
 title: Chowdown
 email: your-email@domain.com
 description: The plain text recipe database for hackers
-baseurl: "https://recipe-test.fuzzwah.com"
+baseurl: "https://recipes-test.fuzzwah.com"
 language: "en"
 lang_direction: "ltr"
 color: "#007FFF"
